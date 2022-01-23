@@ -11,9 +11,41 @@ domain.xml and host.xml are taken from EAP 7.4 - these are modifed files as gene
 
 Add below lines in domain.xml messaging-activemq section of full-ha profile in domain.xml after running install-domain.cli
 
- ```<jms-queue name="HelloWorld_DQ" entries="java:/hello/HelloWorldDQ"/>
- <jms-topic name="HelloWorld_DT" entries="java:/hello/HelloWorldDT"/>
- <jms-topic name="HelloWorldOneCopyPerServer_DT" entries="java:/hello/HelloWorldOneCopyPerServerDT"/>
- <jms-topic name="HelloWorldOneCopyPerApplication_DT" entries="java:/hello/HelloWorldOneCopyPerApplicationDT"/>
- <pooled-connection-factory name="HelloWorldOneCopyPerServer_CF" entries="java:/hello/HelloWorldOneCopyPerServerCF" connectors="in-vm"/>
- <pooled-connection-factory name="HelloWorldOneCopyPerApplication_CF" entries="java:/hello/HelloWorldOneCopyPerApplicationCF" connectors="in-vm"/>```
+```<jms-queue name="HelloWorld_DQ" entries="java:/hello/HelloWorldDQ"/>
+<jms-topic name="HelloWorld_DT" entries="java:/hello/HelloWorldDT"/>
+<jms-topic name="HelloWorldOneCopyPerServer_DT" entries="java:/hello/HelloWorldOneCopyPerServerDT"/>
+<jms-topic name="HelloWorldOneCopyPerApplication_DT" entries="java:/hello/HelloWorldOneCopyPerApplicationDT"/>
+<pooled-connection-factory name="HelloWorldOneCopyPerServer_CF" entries="java:/hello/HelloWorldOneCopyPerServerCF" connectors="in-vm"/>
+<pooled-connection-factory name="HelloWorldOneCopyPerApplication_CF" entries="java:/hello/HelloWorldOneCopyPerApplicationCF" connectors="in-vm"/>
+```
+
+
+To test application access URL - http://localhost:9080/helloworld-mdb/HelloWorldMDBServletClientMine?topic
+
+Then check server.log files of servers located in jboss-eap-7.4\domain\servers directory. Servers are   and quickstart-messagingcluster-node2
+
+Server logs  
+**quickstart-messagingcluster-node1**
+```
+2022-01-23 22:28:42,178 INFO  [class org.jboss.as.quickstarts.mdb.HelloOneCopyPerServerTopicMDBOne] (Thread-1 (ActiveMQ-client-global-threads)) Received Message from topic: This is messageeeee 1
+2022-01-23 22:28:42,178 INFO  [class org.jboss.as.quickstarts.mdb.HelloOneCopyPerServerTopicMDBTwo] (Thread-3 (ActiveMQ-client-global-threads)) Received Message from topic: This is messageeeee 1
+2022-01-23 22:28:42,206 INFO  [class org.jboss.as.quickstarts.mdb.HelloOneCopyPerServerTopicMDBTwo] (Thread-10 (ActiveMQ-client-global-threads)) Received Message from topic: This is messageeeee 2
+2022-01-23 22:28:42,207 INFO  [class org.jboss.as.quickstarts.mdb.HelloOneCopyPerServerTopicMDBOne] (Thread-9 (ActiveMQ-client-global-threads)) Received Message from topic: This is messageeeee 2
+2022-01-23 22:28:42,216 INFO  [class org.jboss.as.quickstarts.mdb.HelloOneCopyPerServerTopicMDBTwo] (Thread-5 (ActiveMQ-client-global-threads)) Received Message from topic: This is messageeeee 3
+2022-01-23 22:28:42,216 INFO  [class org.jboss.as.quickstarts.mdb.HelloOneCopyPerServerTopicMDBOne] (Thread-0 (ActiveMQ-client-global-threads)) Received Message from topic: This is messageeeee 3
+2022-01-23 22:28:42,228 INFO  [class org.jboss.as.quickstarts.mdb.HelloOneCopyPerAppTopicMDBOne] (Thread-11 (ActiveMQ-client-global-threads)) Received Message from topic: This is messageeeee 1
+2022-01-23 22:28:42,229 INFO  [class org.jboss.as.quickstarts.mdb.HelloOneCopyPerAppTopicMDBTwo] (Thread-4 (ActiveMQ-client-global-threads)) Received Message from topic: This is messageeeee 1
+2022-01-23 22:28:42,261 INFO  [class org.jboss.as.quickstarts.mdb.HelloOneCopyPerAppTopicMDBOne] (Thread-2 (ActiveMQ-client-global-threads)) Received Message from topic: This is messageeeee 3
+2022-01-23 22:28:42,262 INFO  [class org.jboss.as.quickstarts.mdb.HelloOneCopyPerAppTopicMDBTwo] (Thread-6 (ActiveMQ-client-global-threads)) Received Message from topic: This is messageeeee 3
+```
+**quickstart-messagingcluster-node2**
+```
+2022-01-23 22:28:42,315 INFO  [class org.jboss.as.quickstarts.mdb.HelloOneCopyPerAppTopicMDBTwo] (Thread-7 (ActiveMQ-client-global-threads)) Received Message from topic: This is messageeeee 2
+2022-01-23 22:28:42,316 INFO  [class org.jboss.as.quickstarts.mdb.HelloOneCopyPerAppTopicMDBOne] (Thread-6 (ActiveMQ-client-global-threads)) Received Message from topic: This is messageeeee 2
+2022-01-23 22:28:42,314 INFO  [class org.jboss.as.quickstarts.mdb.HelloOneCopyPerServerTopicMDBOne] (Thread-3 (ActiveMQ-client-global-threads)) Received Message from topic: This is messageeeee 2
+2022-01-23 22:28:42,315 INFO  [class org.jboss.as.quickstarts.mdb.HelloOneCopyPerServerTopicMDBOne] (Thread-1 (ActiveMQ-client-global-threads)) Received Message from topic: This is messageeeee 3
+2022-01-23 22:28:42,314 INFO  [class org.jboss.as.quickstarts.mdb.HelloOneCopyPerServerTopicMDBTwo] (Thread-4 (ActiveMQ-client-global-threads)) Received Message from topic: This is messageeeee 1
+2022-01-23 22:28:42,314 INFO  [class org.jboss.as.quickstarts.mdb.HelloOneCopyPerServerTopicMDBOne] (Thread-2 (ActiveMQ-client-global-threads)) Received Message from topic: This is messageeeee 1
+2022-01-23 22:28:42,315 INFO  [class org.jboss.as.quickstarts.mdb.HelloOneCopyPerServerTopicMDBTwo] (Thread-0 (ActiveMQ-client-global-threads)) Received Message from topic: This is messageeeee 2
+2022-01-23 22:28:42,314 INFO  [class org.jboss.as.quickstarts.mdb.HelloOneCopyPerServerTopicMDBTwo] (Thread-5 (ActiveMQ-client-global-threads)) Received Message from topic: This is messageeeee 3
+```
